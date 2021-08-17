@@ -52,7 +52,7 @@ namespace CalculatorMicroservice.Services
             }
             else if (input.Contains("//"))
             {
-                var inputArray = input.Split("\n");
+                var inputArray = Regex.Split(input, @"[\n]");
                 var l = inputArray.First();
                 var delimArray = l.ToCharArray();
                 var delims = delimArray[2..delimArray.Length];
@@ -62,14 +62,19 @@ namespace CalculatorMicroservice.Services
                 numbers = secondPart.Split(delims);
 
             }
-            else if (!input.Contains(",\n"))
+            else
             {
                 numbers = Regex.Split(input, @"[,\n]");
             }
-            else
+            
+            foreach (var n in numbers)
             {
-                throw new Exception("Unrecognised delimiter format");
+                if(string.IsNullOrEmpty(n))
+                {
+                    throw new Exception("Unrecognised delimiter format");
+                }
             }
+  
 
             var negativeNumbers = new List<int>();
             foreach (var n in numbers)
